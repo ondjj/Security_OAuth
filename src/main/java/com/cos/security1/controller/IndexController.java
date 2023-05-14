@@ -1,11 +1,22 @@
 package com.cos.security1.controller;
 
+import com.cos.security1.model.User;
+import com.cos.security1.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class IndexController {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping({"","/"})
     public String index(){
@@ -27,19 +38,25 @@ public class IndexController {
         return "manager";
     }
 
-    // 스프링 시큐리티가 login 주소는 낚아채감! -> SecurityConfig 파일 설정 후 작동 안함
-    @GetMapping("/login")
-    public @ResponseBody String login(){
-        return "login";
+    // 스프링 시큐리티가 login 주소는 낚아채감! -> SecurityConfig 파일 설정 후 작동 안경
+    @GetMapping("/loginForm")
+    public String loginForm(){
+        return "loginForm";
     }
 
-    @GetMapping("/join")
-    public @ResponseBody String join(){
-        return "join";
+    @GetMapping("/joinForm")
+    public String joinForm(){
+        return "joinForm";
     }
 
-    @GetMapping("/joinProc")
-    public @ResponseBody String joinProc(){
-        return "회원가입 완료됨!";
+    @PostMapping("/join")
+    public String join(User user){
+        System.out.println("user = " + user);
+        user.setRole("ROLE_USER");
+        String rawPass = user.getPassword();
+        String encPass = bCryptPasswordEncoder.encode(rawPass);
+        user.setPassword(encPass);
+        userRepository.save(user); // 회원가입은 잘되나 시큐리티로 로그인 불가 -> 패스워드가 암호화가 안되었기 때문에 !
+        return "redirect:/loginForm";
     }
 }
