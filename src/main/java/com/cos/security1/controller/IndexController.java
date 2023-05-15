@@ -40,7 +40,7 @@ public class IndexController {
         return "manager";
     }
 
-    // 스프링 시큐리티가 login 주소는 낚아채감! -> SecurityConfig 파일 설정 후 작동 안경
+    // 스프링 시큐리티가 login 주소는 낚아채감! -> SecurityConfig 파일 설정 후 작동 안됌
     @GetMapping("/loginForm")
     public String loginForm(){
         return "loginForm";
