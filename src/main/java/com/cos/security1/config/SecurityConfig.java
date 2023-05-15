@@ -29,10 +29,11 @@ public class SecurityConfig {
     @Autowired
     PrincipalOAuth2UserService principalOAuth2UserService;
 
-    @Bean // 해당 메서드의 리턴되는 오브젝트를 IoC로 등록해준다.
-    public BCryptPasswordEncoder encodePwd(){
-        return new BCryptPasswordEncoder();
-    }
+//    순환 참조 오류 발생 -> BCryptPasswordEncoder 전용 클래스를 별도로 생성하는걸로 해결.
+//    @Bean // 해당 메서드의 리턴되는 오브젝트를 IoC로 등록해준다.
+//    public BCryptPasswordEncoder encodePwd(){
+//        return new BCryptPasswordEncoder();
+//    }
 
     /**
      * 기존 WebSecurityConfigurerAdapter 방식은 deprecated 처리되었다. 아래 블로그를 참고

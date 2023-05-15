@@ -18,6 +18,9 @@ public class PrincipalDetailsService implements UserDetailsService {
     // loginForm에 있는 input 태그 name 속성인 username 과 일치해야한다.
     // 만약 name 속성과 loadUserByUsername의 매개 변수를 다르게 설정하고 싶다면 SecurityConfig에 추가 설정이 필요함
     // .usernameParameter("name 속성 설정 이름")
+    // ++ 추가
+    // 시큐리티 session(내부 Authentication(내부 UserDetails))
+    // 함수 종료시 @AuthenticationPrincipal 어노테이션이 만들어진다.
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
