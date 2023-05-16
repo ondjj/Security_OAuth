@@ -3,6 +3,7 @@ package com.cos.security1.config.oauth;
 import com.cos.security1.config.auth.PrincipalDetails;
 import com.cos.security1.config.oauth.provider.FacebookUserInfo;
 import com.cos.security1.config.oauth.provider.GoogleUserInfo;
+import com.cos.security1.config.oauth.provider.NaverUserInfo;
 import com.cos.security1.config.oauth.provider.OAuth2UserInfo;
 import com.cos.security1.model.User;
 import com.cos.security1.repository.UserRepository;
@@ -13,6 +14,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
@@ -26,7 +29,7 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         /**
-         * registrationId -> 어떤 OAuth로 로그인 했는지 확인 가능.
+         * registrationId -> 어떤 OAuth2로 로그인 했는지 확인 가능.
          */
         System.out.println("userRequest = " + userRequest.getClientRegistration());
         System.out.println("getAccessToken = " + userRequest.getAccessToken());
@@ -47,7 +50,10 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
             System.out.println("페이스북 로그인 요청");
             oAuth2UserInfo = new FacebookUserInfo(oAuth2User.getAttributes());
 
-        }else{
+        } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
+            System.out.println("네이버 로그인 요청");
+            oAuth2UserInfo = new NaverUserInfo((Map)oAuth2User.getAttributes().get("response"));
+        } else{
             System.out.println("지원하지않는 소셜 로그인입니다.");
         }
 
