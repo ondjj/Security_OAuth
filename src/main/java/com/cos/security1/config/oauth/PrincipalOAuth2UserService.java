@@ -1,10 +1,7 @@
 package com.cos.security1.config.oauth;
 
 import com.cos.security1.config.auth.PrincipalDetails;
-import com.cos.security1.config.oauth.provider.FacebookUserInfo;
-import com.cos.security1.config.oauth.provider.GoogleUserInfo;
-import com.cos.security1.config.oauth.provider.NaverUserInfo;
-import com.cos.security1.config.oauth.provider.OAuth2UserInfo;
+import com.cos.security1.config.oauth.provider.*;
 import com.cos.security1.model.User;
 import com.cos.security1.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +50,12 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
         } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
             System.out.println("네이버 로그인 요청");
             oAuth2UserInfo = new NaverUserInfo((Map)oAuth2User.getAttributes().get("response"));
-        } else{
+
+        } else if (userRequest.getClientRegistration().getRegistrationId().equals("kakao")){
+            System.out.println("카카오 로그인 요청");
+            oAuth2UserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
+        }
+        else{
             System.out.println("지원하지않는 소셜 로그인입니다.");
         }
 
